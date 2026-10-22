@@ -338,7 +338,8 @@
     q("#scaler").style.transform = `translateX(-50%) scale(${s})`; };
   fit(); addEventListener("resize", fit);
   const syncBg = () => { const k = innerWidth / 1920, r = document.documentElement.style;
-    r.setProperty("--bg-h", Math.round(1466 * k) + "px");
+    // never shorter than the pinned stage's bottom edge, or the stripes end mid-screen on short/narrow laptops
+    r.setProperty("--bg-h", Math.round(Math.max(1466 * k, q(".scrolly").offsetTop + innerHeight - 76)) + "px");
     r.setProperty("--hero-off", q(".hero").offsetTop + "px");
     r.setProperty("--stage-off", q(".scrolly").offsetTop + "px"); };
   syncBg(); addEventListener("resize", syncBg);
