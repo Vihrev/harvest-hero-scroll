@@ -184,6 +184,14 @@
   #emp0 .hl { position: absolute; inset: 0; border-radius: 10px; background: #e9f8ef; box-shadow: inset 0 0 0 1.5px #2fbf71; }
   #emp0 > *:not(.hl) { position: relative; }
   .cursor { position: absolute; left: 0; top: 0; width: 22px; height: 22px; z-index: 6; pointer-events: none; }
+  /* split variant: compact cards, so the column is no taller than the docked app window */
+  .sat .hd { padding: 8px 14px; } .sat .ic { width: 28px; height: 28px; }
+  .sat .bd { padding: 10px 14px 12px; }
+  .timer { margin-top: 4px; gap: 10px; } .timer b { font-size: 22px; } .stop { width: 28px; height: 28px; }
+  .emp { padding: 6px 8px; } .emp + .emp { margin-top: 4px; } .emp .av { width: 26px; height: 26px; }
+  .bar { margin: 8px 0 6px; }
+  .line { padding: 4px 0; }
+  .tot { margin-top: 6px; } .tot b { font-size: 22px; }
   /* manage */
   .bar { height: 8px; border-radius: 4px; background: #f3efe2; margin: 10px 0 8px; overflow: hidden; }
   .bar i { display: block; height: 100%; width: 100%; border-radius: 4px; background: #e0a100; transform-origin: 0 50%; }
@@ -332,12 +340,15 @@
   ];
   q("#sats").innerHTML = SATS.map((s) => `<div class="sat" id="${s.id}" style="left:${s.x}px;top:${s.y}px;width:${s.w}px;--ac:${s.ac};--bg:${s.bg};--sh:${s.sh}">${s.html}${BADGE}</div>`).join("");
 
-  // split layout: the cards stack in one column on the left (in reveal order), the app docks to the right
-  const ORDER = [0, 2, 1, 3], COL_X = -110, COL_W = 420, GAP = 18;
+  // split layout: the cards stack in one column on the left (in reveal order), the app docks to the right.
+  // The column spans exactly the docked window's height: first card top = window top, last card bottom = window bottom.
+  const ORDER = [0, 2, 1, 3], COL_X = -101, COL_W = 420, WIN_SCALE = 0.83;
+  const WIN_TOP = 390 - (780 * WIN_SCALE) / 2, WIN_H = 780 * WIN_SCALE;
   const stackCards = () => { ORDER.forEach((i) => { const el = q(`#${SATS[i].id}`); el.style.left = COL_X + "px"; el.style.width = COL_W + "px"; });
     const hs = ORDER.map((i) => q(`#${SATS[i].id}`).offsetHeight);
-    let y = 390 - (hs.reduce((a, b) => a + b, 0) + GAP * (hs.length - 1)) / 2;
-    ORDER.forEach((i, k) => { q(`#${SATS[i].id}`).style.top = Math.round(y) + "px"; y += hs[k] + GAP; }); };
+    const gap = (WIN_H - hs.reduce((a, b) => a + b, 0)) / (hs.length - 1);
+    let y = WIN_TOP;
+    ORDER.forEach((i, k) => { q(`#${SATS[i].id}`).style.top = Math.round(y) + "px"; y += hs[k] + gap; }); };
   stackCards(); document.fonts.ready.then(stackCards);
 
   // fit the 1890-wide scene into the viewport (top-aligned, no big gap under the hero)
@@ -413,7 +424,7 @@
   tl.fromTo(days, { t: 0 }, { t: 5, duration: 1, onUpdate: () => renderTable(days.t) }, 0);
 
   // 3) the app slides to the right and shrinks a little, freeing a column on the left
-  tl.to("#win", { x: 70, scale: 0.78, transformOrigin: "100% 50%", duration: 0.6, ease: "power2.inOut" }, 1.0);
+  tl.to("#win", { x: 95, scale: WIN_SCALE, transformOrigin: "100% 50%", duration: 0.6, ease: "power2.inOut" }, 1.0);
 
   // 4) feature cards slide out of the app into that column, top to bottom, unhurried
   const reveal = (i, t0) => { const el = q(`#${SATS[i].id}`);
