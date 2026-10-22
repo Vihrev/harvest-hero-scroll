@@ -342,7 +342,7 @@
 
   // split layout: the cards stack in one column on the left (in reveal order), the app docks to the right.
   // The column spans exactly the docked window's height: first card top = window top, last card bottom = window bottom.
-  const ORDER = [0, 2, 1, 3], COL_X = -101, COL_W = 420, WIN_SCALE = 0.83;
+  const ORDER = [0, 2, 1, 3], COL_X = -46, COL_W = 340, WIN_SCALE = 0.83;
   const WIN_TOP = 390 - (780 * WIN_SCALE) / 2, WIN_H = 780 * WIN_SCALE;
   const stackCards = () => { ORDER.forEach((i) => { const el = q(`#${SATS[i].id}`); el.style.left = COL_X + "px"; el.style.width = COL_W + "px"; });
     const hs = ORDER.map((i) => q(`#${SATS[i].id}`).offsetHeight);
@@ -424,7 +424,7 @@
   tl.fromTo(days, { t: 0 }, { t: 5, duration: 1, onUpdate: () => renderTable(days.t) }, 0);
 
   // 3) the app slides to the right and shrinks a little, freeing a column on the left
-  tl.to("#win", { x: 95, scale: WIN_SCALE, transformOrigin: "100% 50%", duration: 0.6, ease: "power2.inOut" }, 1.0);
+  tl.to("#win", { x: 46, scale: WIN_SCALE, transformOrigin: "100% 50%", duration: 0.6, ease: "power2.inOut" }, 1.0);
 
   // 4) feature cards slide out of the app into that column, top to bottom, unhurried
   const reveal = (i, t0) => { const el = q(`#${SATS[i].id}`);
