@@ -62,7 +62,7 @@
   .sticky::before { background:
       repeating-linear-gradient(90deg, rgba(255,255,255,0.5) 0 1px, transparent 1px 6px),
       linear-gradient(180deg, #ffffff 31.4%, rgba(255,255,255,0.24) 66.8%),
-      radial-gradient(ellipse 69.4% 63.3% at 49% 36.7%, #ffffff 0%, #f2ddff 100%) #f2ddff;
+      radial-gradient(ellipse 69.4% 63.3% at 49% 36.7%, #ffffff 0%, #f2ddff 100%);
     background-size: 100% var(--bg-h); background-repeat: no-repeat; }
   .sticky::before, .hero-bg-copy { content: ""; position: absolute; inset: 0; pointer-events: none;
     background-position: 0 calc(-1 * var(--stage-off, 700px)); }
@@ -334,12 +334,15 @@
   q("#sats").innerHTML = SATS.map((s) => `<div class="sat" id="${s.id}" style="left:${s.x}px;top:${s.y}px;width:${s.w}px;--ac:${s.ac};--bg:${s.bg};--sh:${s.sh}">${s.html}${BADGE}</div>`).join("");
 
   // fit the 1890-wide scene into the viewport (top-aligned, no big gap under the hero)
-  const fit = () => { const s = Math.min(0.87, (innerWidth - 24) / 1890, (innerHeight - 76 - 30) / 920);
+  let sceneScale = 0.87;
+  const fit = () => { const s = (sceneScale = Math.min(0.87, (innerWidth - 24) / 1890, (innerHeight - 76 - 30) / 920));
     q("#scaler").style.transform = `translateX(-50%) scale(${s})`; };
   fit(); addEventListener("resize", fit);
   const syncBg = () => { const k = innerWidth / 1920, r = document.documentElement.style;
-    // never shorter than the pinned stage's bottom edge, or the stripes end mid-screen on short/narrow laptops
-    r.setProperty("--bg-h", Math.round(Math.max(1466 * k, q(".scrolly").offsetTop + innerHeight - 76)) + "px");
+    // never shorter than the lowest feature card (Bill Clients, stage y 640 + 210) plus some air,
+    // or the stripes end mid-window on short/narrow laptops
+    const winBottom = q(".scrolly").offsetTop + 20 + (48 + 850 + 130) * sceneScale;
+    r.setProperty("--bg-h", Math.round(Math.max(1466 * k, winBottom)) + "px");
     r.setProperty("--hero-off", q(".hero").offsetTop + "px");
     r.setProperty("--stage-off", q(".scrolly").offsetTop + "px"); };
   syncBg(); addEventListener("resize", syncBg);
