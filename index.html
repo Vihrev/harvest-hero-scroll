@@ -148,7 +148,8 @@
   .c-pr { width: 155px; display: flex; align-items: center; gap: 10px; padding-left: 24px; }
   .c-pr .pt { width: 74px; height: 7px; border-radius: 4px; background: #e6ecf3; position: relative; overflow: hidden; }
   .c-pr .pf { position: absolute; left: 0; top: 0; height: 100%; border-radius: 4px; background: #10b981; }
-  .c-dl { width: 100px; font-size: 11px; }
+  .c-dl { width: 100px; font-size: 11px; color: #9aa3b5; }
+  .c-st small { font-size: 8px; color: #6b7590; }
   .task .day { font-size: 14px; }
   #foot { top: 459px; height: 81px; background: #f9fafd; flex-direction: column; }
   #foot .sub { display: flex; height: 40px; width: 1301px; max-width: none; margin: 0; font-size: inherit; line-height: normal; font-weight: inherit; } /* undo the hero .sub paragraph styles */
@@ -291,7 +292,7 @@
   html += `<div class="row" id="leave"><div class="left">Total Leave Time:&nbsp; 0:00</div>${'<div class="day">0</div>'.repeat(5)}<div class="day we"></div><div class="day we"></div></div>`;
   ROWS.forEach((r, i) => {
     html += `<div class="row task" id="r${i}" style="top:${141 + 53*i}px"><div class="left"><div class="c-name"><b>${r.n}</b><i>${r.c}</i></div>
-      <div class="c-flag">${FLAG}<span>Unkno...</span></div><div class="c-com"><span>0</span>${COM}</div><div class="c-st">${stIcon(r.st)}<span>${r.st}</span></div>
+      <div class="c-flag">${FLAG}<span>Unkno...</span></div><div class="c-com"><span>0</span>${COM}</div><div class="c-st">${stIcon(r.st)}<span style="color:${r.st === "New" ? "#f59e0b" : "#0f9d58"}">${r.st} <small>▾</small></span></div>
       <div class="c-pr"><span style="width:40px" id="pc${i}">0.0%</span><div class="pt"><div class="pf" id="pf${i}" style="width:0%"></div></div></div><div class="c-dl">No deadline</div></div>`;
     r.h.forEach((m, d) => (html += `<div class="day"><span class="hv" id="h${i}_${d}"></span></div>`));
     html += `<div class="day we"></div><div class="day we"></div></div>`;
@@ -368,7 +369,7 @@
     });
     ROWS.forEach((r, i) => { const pct = (logged[i] / EST[i]) * 100;
       q(`#pc${i}`).textContent = pct.toFixed(1) + "%";
-      const bar = q(`#pf${i}`); bar.style.width = Math.min(pct, 100) + "%"; bar.style.background = pct > 100 ? "#f7931e" : "#10b981"; });
+      q(`#pc${i}`).style.color = pct > 100 ? "#f7931e" : "#10b981"; const bar = q(`#pf${i}`); bar.style.width = Math.min(pct, 100) + "%"; bar.style.background = pct > 100 ? "#f7931e" : "#10b981"; });
     const s = r5(week); q("#k-tot").textContent = s; q("#k-reg").textContent = s; q("#k-twt").textContent = s;
     q("#barw").style.transform = `scaleX(${week / 2400})`;
   };
