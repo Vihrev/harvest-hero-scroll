@@ -194,6 +194,10 @@
   .tot { margin-top: 6px; } .tot b { font-size: 22px; }
   #panel { position: absolute; opacity: 0; background: #fff; border-radius: 20px; box-shadow: 0 24px 60px rgba(124, 77, 255, 0.16), 0 2px 8px rgba(124, 77, 255, 0.08); }
   .sat { border-radius: 14px; box-shadow: 0 8px 18px -10px var(--sh); }
+  /* Bill Clients: check sits inside the header, quiet "Paid" label left of the total */
+  #s3 .badge { top: 14px; right: 14px; box-shadow: none; }
+  #s3 .tot { margin-top: 8px; padding-top: 4px; }
+  #s3 .paid { background: none; padding: 0 0 0 6px; color: #8a96b3; font-size: 13px; font-weight: 600; }
   .emp { gap: 8px; } .emp .nm b, .emp .nm i { white-space: nowrap; }
   .st { width: 84px; height: 24px; } .st span { font-size: 11px; }
   .sat .badge { top: -8px; right: -8px; width: 18px; height: 18px; } .sat .badge svg { width: 10px; height: 10px; }
@@ -341,7 +345,7 @@
     { id: "s3", ac: "#ec4f9a", bg: "#ffe6f1", sh: "rgba(236,79,154,0.30)", x: 590, y: 640, w: 350, html: `${head("Bill Clients", "dollar", "#ec4f9a")}
       <div class="bd"><div class="muted" style="margin-bottom:4px">Invoice #1042 · Acme</div>
       <div class="line"><span>Logo design · 26h × $80</span><b>$2,080</b></div><div class="line"><span>Client calls · 14h × $80</span><b>$1,120</b></div>
-      <div class="tot"><b id="btot">$0</b><span class="paid" id="paid">Paid</span></div></div>` },
+      <div class="tot"><span class="paid" id="paid">Paid</span><b id="btot">$0</b></div></div>` },
   ];
   q("#sats").innerHTML = SATS.map((s) => `<div class="sat" id="${s.id}" style="left:${s.x}px;top:${s.y}px;width:${s.w}px;--ac:${s.ac};--bg:${s.bg};--sh:${s.sh}">${s.html}${BADGE}</div>`).join("");
 
