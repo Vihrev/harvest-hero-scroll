@@ -35,7 +35,7 @@ js = js.replace(/const fit = \(\) => \{[\s\S]*?\n  fit\(\); addEventListener\("r
 // the page-background sync belongs to the site, not to the block
 js = js.replace(/  const syncBg = \(\) => \{[\s\S]*?syncBg\(\); addEventListener\("resize", syncBg\);\n/, "");
 swap("  gsap.registerPlugin(ScrollTrigger);\n", "");
-swap("const HOLD = 3,", 'const HOLD = parseFloat(host.getAttribute("hold")) || 3,');
+swap("const HOLD = 7,", 'const HOLD = parseFloat(host.getAttribute("hold")) || 7,');
 // GSAP resolves string targets against `document`, which cannot see into the shadow root:
 // route every string selector through a selector scoped to the component
 js = js.replace(/(\bgsap\.set|\btl\.to|\btl\.fromTo|\btl\.from|\)\.to)\(("[^"]+"|`[^`]+`)/g, "$1($sel($2)");

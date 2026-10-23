@@ -11,7 +11,7 @@ Live demo: https://vihrev.github.io/harvest-hero-scroll/block/demo.html
 1. The week fills in: the hours, the daily waves and the task progress bars.
 2. The app window moves right, and a white panel with 4 feature cards slides in on the left.
 3. Each card plays its action: timer, task progress, timesheet approval, invoice $3,200.
-4. The last frame holds for 3 s, then everything returns smoothly to the first frame and loops.
+4. The last frame holds for 7 s, then everything returns smoothly to the first frame and loops.
 
 The animation starts when the block is at least 25% visible and pauses when it scrolls out of view.
 If the user has "reduce motion" enabled, the block shows the finished frame without animation.
@@ -44,7 +44,7 @@ Recommended container width: up to 1640 px.
 
 | Attribute | Default | What it does |
 |---|---|---|
-| `hold="3"` | `3` | Seconds to hold the last frame before looping |
+| `hold="7"` | `7` | Seconds to hold the last frame before looping |
 | `static` | — | No animation: always show the finished frame (for example, for a screenshot) |
 
 ## Fonts

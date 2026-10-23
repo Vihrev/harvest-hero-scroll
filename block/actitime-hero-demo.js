@@ -154,7 +154,7 @@
       gsap.set($sel("#mbar"), { scaleX: 0 }); // "Paid" stays visible the whole time
     
       // auto-play: the same story as the scroll version, but on a clock — plays, holds the last frame 3 s, starts over
-      const HOLD = parseFloat(host.getAttribute("hold")) || 3, SPEED = 0.55; // timeline units → seconds: 1 unit ≈ 1.8 s, whole run ≈ 8.4 s
+      const HOLD = parseFloat(host.getAttribute("hold")) || 7, SPEED = 0.55; // timeline units → seconds: 1 unit ≈ 1.8 s, whole run ≈ 8.4 s
       // the timeline ends with an outro that returns everything to the first frame, so the loop restarts without a jump.
       // Timeline time is slowed by timeScale, so real seconds are converted with u() wherever exact timing matters.
       const u = (sec) => sec * SPEED;
