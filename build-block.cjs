@@ -36,6 +36,8 @@ js = js.replace(/const fit = \(\) => \{[\s\S]*?\n  fit\(\); addEventListener\("r
 js = js.replace(/  const syncBg = \(\) => \{[\s\S]*?syncBg\(\); addEventListener\("resize", syncBg\);\n/, "");
 swap("  gsap.registerPlugin(ScrollTrigger);\n", "");
 swap("const HOLD = 3,", 'const HOLD = parseFloat(host.getAttribute("hold")) || 3,');
+// render seeks immediately (no lazy first render) so `static` / reduced-motion frames are complete at once
+swap('defaults: { ease: "none" }, repeat: -1', 'defaults: { ease: "none", lazy: false }, repeat: -1');
 // start when visible, pause when scrolled away; reduced motion → show the finished state
 js = js.replace(/  \/\/ start once the fonts are in[\s\S]*$/, `  const STORY_END = 4.6; // timeline time of the finished frame (before the outro)
   const still = host.hasAttribute("static") || matchMedia("(prefers-reduced-motion: reduce)").matches;

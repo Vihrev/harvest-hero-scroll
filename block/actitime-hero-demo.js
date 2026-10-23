@@ -157,7 +157,7 @@
       // the timeline ends with an outro that returns everything to the first frame, so the loop restarts without a jump.
       // Timeline time is slowed by timeScale, so real seconds are converted with u() wherever exact timing matters.
       const u = (sec) => sec * SPEED;
-      const tl = gsap.timeline({ paused: true, defaults: { ease: "none" }, repeat: -1, repeatDelay: u(0.3) });
+      const tl = gsap.timeline({ paused: true, defaults: { ease: "none", lazy: false }, repeat: -1, repeatDelay: u(0.3) });
       tl.timeScale(SPEED);
     
       // 2) week fills
