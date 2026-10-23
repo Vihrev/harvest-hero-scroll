@@ -419,8 +419,10 @@
 
   // auto-play: the same story as the scroll version, but on a clock — plays, holds the last frame 3 s, starts over
   const HOLD = 3, SPEED = 0.55; // timeline units → seconds: 1 unit ≈ 1.8 s, whole run ≈ 8.4 s
-  // repeatDelay runs in timeline time, which timeScale also slows down — so pre-scale it to get HOLD real seconds
-  const tl = gsap.timeline({ paused: true, defaults: { ease: "none" }, repeat: -1, repeatDelay: HOLD * SPEED });
+  // the timeline ends with an outro that returns everything to the first frame, so the loop restarts without a jump.
+  // Timeline time is slowed by timeScale, so real seconds are converted with u() wherever exact timing matters.
+  const u = (sec) => sec * SPEED;
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none" }, repeat: -1, repeatDelay: u(0.3) });
   tl.timeScale(SPEED);
 
   // 2) week fills
@@ -450,6 +452,15 @@
   const bt = { v: 0 };
   tl.fromTo(bt, { v: 0 }, { v: 3200, duration: 0.8, ease: "power2.out", onUpdate: () => (q("#btot").textContent = "$" + (Math.round(bt.v / 10) * 10).toLocaleString("en-US")) }, 3.6);
   tl.fromTo("#paid", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.2, ease: "power2.out" }, 4.4);
+
+  // outro after a HOLD-second pause on the last frame: cards fade out bottom-up, the panel leaves,
+  // the app grows back to full size while the week empties — ending exactly on the first frame
+  const OUT = 4.6 + u(HOLD);
+  [...ORDER].reverse().forEach((i, k) =>
+    tl.to(`#${SATS[i].id}`, { opacity: 0, x: -24, duration: u(0.35), ease: "power2.in" }, OUT + u(k * 0.12)));
+  tl.to("#panel", { opacity: 0, x: -40, duration: u(0.4), ease: "power2.in" }, OUT + u(0.4));
+  tl.to("#win", { x: 0, scale: 1, duration: u(0.9), ease: "power2.inOut" }, OUT + u(0.5));
+  tl.to(days, { t: 0, duration: u(0.9), ease: "power1.inOut", onUpdate: () => renderTable(days.t) }, OUT + u(0.5));
 
   // start once the fonts are in (card heights are final), with a short beat so the page settles first
   document.fonts.ready.then(() => { stackCards(); gsap.delayedCall(0.6, () => tl.play(0)); });
