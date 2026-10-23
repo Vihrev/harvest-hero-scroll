@@ -346,10 +346,10 @@
   q("#sats").innerHTML = SATS.map((s) => `<div class="sat" id="${s.id}" style="left:${s.x}px;top:${s.y}px;width:${s.w}px;--ac:${s.ac};--bg:${s.bg};--sh:${s.sh}">${s.html}${BADGE}</div>`).join("");
 
   // compact layout: the app docks right (bigger), the cards sit in one white panel on the left that
-  // overlaps the app's left edge a little; the panel is exactly as tall as the docked window.
-  const ORDER = [0, 2, 1, 3], WIN_SCALE = 0.9, WIN_X = 68;
+  // covers the app's sidebar (190px × scale + a few px); the panel is exactly as tall as the docked window.
+  const ORDER = [0, 2, 1, 3], WIN_SCALE = 0.9, WIN_X = -10;
   const WIN_TOP = 390 - (780 * WIN_SCALE) / 2, WIN_H = 780 * WIN_SCALE;
-  const PANEL_X = -68, PANEL_W = 316, PAD = 15, COL_X = PANEL_X + PAD, COL_W = PANEL_W - 2 * PAD;
+  const PANEL_X = 9, PANEL_W = 316, PAD = 15, COL_X = PANEL_X + PAD, COL_W = PANEL_W - 2 * PAD;
   const stackCards = () => { ORDER.forEach((i) => { const el = q(`#${SATS[i].id}`); el.style.left = COL_X + "px"; el.style.width = COL_W + "px"; });
     Object.assign(q("#panel").style, { left: PANEL_X + "px", top: WIN_TOP + "px", width: PANEL_W + "px", height: WIN_H + "px" });
     const hs = ORDER.map((i) => q(`#${SATS[i].id}`).offsetHeight);
