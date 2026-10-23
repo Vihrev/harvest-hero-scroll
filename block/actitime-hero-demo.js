@@ -17,6 +17,7 @@
       if (!window.gsap) { console.error("<actitime-hero-demo>: load GSAP 3 before this script"); return; }
       const host = this, root = this.attachShadow({ mode: "open" });
       root.innerHTML = "<style>" + CSS + "</style>" + HTML;
+    const $sel = gsap.utils.selector(root);
       // ---------- data ----------
       const DAYS = [["Mon","12"],["Tue","13"],["Wed","14"],["Thu","15"],["Fri","16"]];
       const ROWS = [
@@ -148,9 +149,9 @@
         q("#clock").textContent = `${h}:${m}:${s}`; } }, 1000);
     
       // ---------- scroll timeline: ~900px total, one wheel notch per feature window ----------
-      gsap.set(".sat", { opacity: 0 }); gsap.set(".sat .badge", { opacity: 0, scale: 0.5 });
-      gsap.set("#emp0 .hl", { opacity: 0 }); gsap.set(".st .ok", { opacity: 0 }); gsap.set("#cur", { opacity: 0 });
-      gsap.set("#mbar", { scaleX: 0 }); // "Paid" stays visible the whole time
+      gsap.set($sel(".sat"), { opacity: 0 }); gsap.set($sel(".sat .badge"), { opacity: 0, scale: 0.5 });
+      gsap.set($sel("#emp0 .hl"), { opacity: 0 }); gsap.set($sel(".st .ok"), { opacity: 0 }); gsap.set($sel("#cur"), { opacity: 0 });
+      gsap.set($sel("#mbar"), { scaleX: 0 }); // "Paid" stays visible the whole time
     
       // auto-play: the same story as the scroll version, but on a clock — plays, holds the last frame 3 s, starts over
       const HOLD = parseFloat(host.getAttribute("hold")) || 3, SPEED = 0.55; // timeline units → seconds: 1 unit ≈ 1.8 s, whole run ≈ 8.4 s
@@ -165,25 +166,25 @@
       tl.fromTo(days, { t: 0 }, { t: 5, duration: 1, onUpdate: () => renderTable(days.t) }, 0);
     
       // 3) the app slides to the right and shrinks a little, freeing a column on the left
-      tl.to("#win", { x: WIN_X, scale: WIN_SCALE, transformOrigin: "100% 50%", duration: 0.6, ease: "power2.inOut" }, 1.0);
-      tl.fromTo("#panel", { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.5, ease: "power2.out" }, 1.3);
+      tl.to($sel("#win"), { x: WIN_X, scale: WIN_SCALE, transformOrigin: "100% 50%", duration: 0.6, ease: "power2.inOut" }, 1.0);
+      tl.fromTo($sel("#panel"), { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.5, ease: "power2.out" }, 1.3);
     
       // 4) feature cards slide out of the app into that column, top to bottom, unhurried
       const reveal = (i, t0) => { const el = q(`#${SATS[i].id}`);
         tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.4 }, t0);
         tl.fromTo(el, { x: -24, scale: 0.94 }, { x: 0, scale: 1, duration: 0.8, ease: "power2.out" }, t0);
-        tl.fromTo(`#${SATS[i].id} .badge`, { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.2, ease: "power2.out" }, t0 + 0.75); };
+        tl.fromTo($sel(`#${SATS[i].id} .badge`), { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.2, ease: "power2.out" }, t0 + 0.75); };
       ORDER.forEach((i, k) => reveal(i, 1.5 + k * 0.5)); // Track 1.5, Manage 2.0, Approve 2.5, Bill 3.0
     
       // ...and each one shows its action once it has landed
       const mh = { v: 0 };
-      tl.fromTo("#mbar", { scaleX: 0 }, { scaleX: 0.83, duration: 0.8, ease: "power2.out" }, 2.5);
+      tl.fromTo($sel("#mbar"), { scaleX: 0 }, { scaleX: 0.83, duration: 0.8, ease: "power2.out" }, 2.5);
       tl.fromTo(mh, { v: 0 }, { v: 25, duration: 0.8, ease: "power2.out", onUpdate: () => (q("#mh").textContent = Math.round(mh.v) + "h") }, 2.5);
-      tl.fromTo("#cur", { opacity: 0, x: 160, y: 130 }, { opacity: 1, x: 232, y: 80, duration: 0.5, ease: "power2.out" }, 3.1);
-      tl.fromTo("#cur", { scale: 1 }, { scale: 0.8, duration: 0.06 }, 3.6).to("#cur", { scale: 1, duration: 0.06 }, 3.66).to("#cur", { opacity: 0, duration: 0.3 }, 3.95);
-      tl.fromTo("#emp0 .hl", { opacity: 0 }, { opacity: 1, duration: 0.15 }, 3.65);
-      tl.fromTo("#emp0 .st .pend", { opacity: 1 }, { opacity: 0, duration: 0.12 }, 3.68);
-      tl.fromTo("#emp0 .st .ok", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.15 }, 3.7);
+      tl.fromTo($sel("#cur"), { opacity: 0, x: 160, y: 130 }, { opacity: 1, x: 232, y: 80, duration: 0.5, ease: "power2.out" }, 3.1);
+      tl.fromTo($sel("#cur"), { scale: 1 }, { scale: 0.8, duration: 0.06 }, 3.6).to($sel("#cur"), { scale: 1, duration: 0.06 }, 3.66).to($sel("#cur"), { opacity: 0, duration: 0.3 }, 3.95);
+      tl.fromTo($sel("#emp0 .hl"), { opacity: 0 }, { opacity: 1, duration: 0.15 }, 3.65);
+      tl.fromTo($sel("#emp0 .st .pend"), { opacity: 1 }, { opacity: 0, duration: 0.12 }, 3.68);
+      tl.fromTo($sel("#emp0 .st .ok"), { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.15 }, 3.7);
       const bt = { v: 0 };
       tl.fromTo(bt, { v: 0 }, { v: 3200, duration: 0.8, ease: "power2.out", onUpdate: () => (q("#btot").textContent = "$" + (Math.round(bt.v / 10) * 10).toLocaleString("en-US")) }, 3.6);
     
@@ -191,9 +192,9 @@
       // the app grows back to full size while the week empties — ending exactly on the first frame
       const OUT = 4.6 + u(HOLD);
       [...ORDER].reverse().forEach((i, k) =>
-        tl.to(`#${SATS[i].id}`, { opacity: 0, x: -24, duration: u(0.35), ease: "power2.in" }, OUT + u(k * 0.12)));
-      tl.to("#panel", { opacity: 0, x: -40, duration: u(0.4), ease: "power2.in" }, OUT + u(0.4));
-      tl.to("#win", { x: 0, scale: 1, duration: u(0.9), ease: "power2.inOut" }, OUT + u(0.5));
+        tl.to($sel(`#${SATS[i].id}`), { opacity: 0, x: -24, duration: u(0.35), ease: "power2.in" }, OUT + u(k * 0.12)));
+      tl.to($sel("#panel"), { opacity: 0, x: -40, duration: u(0.4), ease: "power2.in" }, OUT + u(0.4));
+      tl.to($sel("#win"), { x: 0, scale: 1, duration: u(0.9), ease: "power2.inOut" }, OUT + u(0.5));
       tl.to(days, { t: 0, duration: u(0.9), ease: "power1.inOut", onUpdate: () => renderTable(days.t) }, OUT + u(0.5));
     
       const STORY_END = 4.6; // timeline time of the finished frame (before the outro)

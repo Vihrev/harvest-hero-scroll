@@ -36,6 +36,10 @@ js = js.replace(/const fit = \(\) => \{[\s\S]*?\n  fit\(\); addEventListener\("r
 js = js.replace(/  const syncBg = \(\) => \{[\s\S]*?syncBg\(\); addEventListener\("resize", syncBg\);\n/, "");
 swap("  gsap.registerPlugin(ScrollTrigger);\n", "");
 swap("const HOLD = 3,", 'const HOLD = parseFloat(host.getAttribute("hold")) || 3,');
+// GSAP resolves string targets against `document`, which cannot see into the shadow root:
+// route every string selector through a selector scoped to the component
+js = js.replace(/(\bgsap\.set|\btl\.to|\btl\.fromTo|\btl\.from|\)\.to)\(("[^"]+"|`[^`]+`)/g, "$1($sel($2)");
+js = "const $sel = gsap.utils.selector(root);\n" + js;
 // render seeks immediately (no lazy first render) so `static` / reduced-motion frames are complete at once
 swap('defaults: { ease: "none" }, repeat: -1', 'defaults: { ease: "none", lazy: false }, repeat: -1');
 // start when visible, pause when scrolled away; reduced motion → show the finished state
