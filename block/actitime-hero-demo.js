@@ -201,7 +201,7 @@
       const still = host.hasAttribute("static") || matchMedia("(prefers-reduced-motion: reduce)").matches;
       document.fonts.ready.then(() => {
         stackCards();
-        if (still) { tl.pause(STORY_END); renderTable(5); return; }
+        if (still) { tl.pause(); tl.totalTime(STORY_END, false); renderTable(5); return; } // false → run onUpdate (counters)
         let started = false;
         new IntersectionObserver(([e]) => {
           if (e.isIntersecting) { if (!started) { started = true; gsap.delayedCall(0.4, () => tl.play(0)); } else tl.resume(); }
