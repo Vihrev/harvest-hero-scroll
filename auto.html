@@ -415,7 +415,7 @@
   gsap.registerPlugin(ScrollTrigger);
   gsap.set(".sat", { opacity: 0 }); gsap.set(".sat .badge", { opacity: 0, scale: 0.5 });
   gsap.set("#emp0 .hl", { opacity: 0 }); gsap.set(".st .ok", { opacity: 0 }); gsap.set("#cur", { opacity: 0 });
-  gsap.set("#mbar", { scaleX: 0 }); gsap.set("#paid", { opacity: 0, scale: 0.6 });
+  gsap.set("#mbar", { scaleX: 0 }); // "Paid" stays visible the whole time
 
   // auto-play: the same story as the scroll version, but on a clock — plays, holds the last frame 3 s, starts over
   const HOLD = 3, SPEED = 0.55; // timeline units → seconds: 1 unit ≈ 1.8 s, whole run ≈ 8.4 s
@@ -451,7 +451,6 @@
   tl.fromTo("#emp0 .st .ok", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.15 }, 3.7);
   const bt = { v: 0 };
   tl.fromTo(bt, { v: 0 }, { v: 3200, duration: 0.8, ease: "power2.out", onUpdate: () => (q("#btot").textContent = "$" + (Math.round(bt.v / 10) * 10).toLocaleString("en-US")) }, 3.6);
-  tl.fromTo("#paid", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.2, ease: "power2.out" }, 4.4);
 
   // outro after a HOLD-second pause on the last frame: cards fade out bottom-up, the panel leaves,
   // the app grows back to full size while the week empties — ending exactly on the first frame
